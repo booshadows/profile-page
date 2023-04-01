@@ -1,0 +1,103 @@
+      <!--FORM-->
+      <form [formGroup]="profileForm">
+        <div class="full-width-container">
+          <button class="start-button" (click)="Add()"><i class="fas fa-plus mx-2"></i>Add New</button>
+          <button class="end-button" (click)="Save()">Save</button>
+        </div>
+        <div class="container-fluid">
+          <div class="row align-items-center form">
+            <div class="col-md-3">
+              <div class="mb-3">
+                <input type="text" class="form-control" id="input1" formControlName="firstName" placeholder="First Name">
+                <div
+                  *ngIf="submitted && profileForm.controls['firstName'].invalid && profileForm.controls['firstName'].touched">
+                  <div *ngIf="profileForm.controls['firstName'].errors?.['required']">First name is required</div>
+                  <div *ngIf="profileForm.controls['firstName'].errors?.['pattern']">First name cannot contain numbers
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="mb-3">
+                <input type="text" class="form-control" id="input2" formControlName="lastName" placeholder="Last Name">
+                <div
+                  *ngIf="submitted && profileForm.controls['lastName'].invalid && profileForm.controls['lastName'].touched">
+                  <div *ngIf="profileForm.controls['lastName'].errors?.['required']">Last name is required</div>
+                  <div *ngIf="profileForm.controls['lastName'].errors?.['pattern']">Last name cannot contain numbers
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="input-group">
+                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
+                  formControlName="income" placeholder="Income">
+                <span class="input-group-text">EUR</span>
+              </div>
+              <div
+                *ngIf="submitted && profileForm.controls['income'].invalid && profileForm.controls['income'].touched">
+                <div *ngIf="profileForm.controls['income'].errors?.['required']">Income is required</div>
+                <div *ngIf="profileForm.controls['income'].errors?.['pattern']">Income should be a number with decimal
+                  precision of 2</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="mb-3">
+                <input type="text" class="form-control" id="input1" formControlName="image" placeholder="Image Url">
+                <div *ngIf="submitted && profileForm.controls['image'].invalid">
+                  <div *ngIf="profileForm.controls['image'].errors?.['pattern']">Image should be a link to an image
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+      <!--FORM-->
+
+      <div class="container-fluid">
+        <div class="d-flex justify-content-between filter">
+          <div class="d-flex">
+            <div *ngIf="weatherData" class="d-flex weather">
+              <p> <i [ngClass]="getWeatherIcon(weatherData.weather[0].id)"></i> {{ weatherData.weather[0].description }}
+              </p>
+              <p class="mx-2"><i style="color: #F25022;" class="fa-solid fa-temperature-three-quarters"></i> {{ weatherData.main.temp }}&deg;C</p>
+            </div>
+
+ 
+            <div class="input-container">
+              <input type="text" class="form-control" placeholder="Search By Name" [formControl]="searchControl">
+              <span class="fa fa-search"></span>
+            </div>
+            
+          </div>
+          <div>
+            <select class="form-select" aria-label="Default select example" (change)="sortData($event)">
+              <option selected hidden>Sort By</option>
+              <option value="firstName">First Name</option>
+              <option value="lastName">Last Name</option>
+              <option value="income">Income</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="cards-container">
+          <div class="card" *ngFor="let f of formDataArr; let i = index;">
+            <div class="del" (click)="deleteForm(i)">
+              <i class="fa-solid fa-x"></i>
+            </div>
+            <img
+              src="{{f.image ? f.image : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'}}"
+              alt="Card image" (click)="editForm(f, i)">
+            <h2>{{f.firstName}} {{f.lastName}}</h2>
+            <p>SCORE</p>
+            <p>{{f.score}}</p>
+            <button (click)="goToDetailPage(f)">OPEN</button>
+          </div>
+
+        </div>
+      </div>
